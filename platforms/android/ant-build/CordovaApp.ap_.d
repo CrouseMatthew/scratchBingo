@@ -38,6 +38,8 @@ C:\Users\Matt\Desktop\Bingo From Scratch\android\platforms\android\assets\www\pl
 C:\Users\Matt\Desktop\Bingo From Scratch\android\platforms\android\assets\www\res \
 C:\Users\Matt\Desktop\Bingo From Scratch\android\platforms\android\assets\www\spec \
 C:\Users\Matt\Desktop\Bingo From Scratch\android\platforms\android\assets\www\spec.html \
+C:\Users\Matt\Desktop\Bingo From Scratch\android\platforms\android\assets\www\temp.html \
+C:\Users\Matt\Desktop\Bingo From Scratch\android\platforms\android\assets\www\working.html \
 C:\Users\Matt\Desktop\Bingo From Scratch\android\platforms\android\assets\www\css\index.css \
 C:\Users\Matt\Desktop\Bingo From Scratch\android\platforms\android\assets\www\img\logo.png \
 C:\Users\Matt\Desktop\Bingo From Scratch\android\platforms\android\assets\www\js\board.js \

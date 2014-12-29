@@ -30,7 +30,163 @@ under the License.
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script data-require="angular.js@1.1.x" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.js" data-semver="1.1.5"></script>
+    <script type="text/javascript" src="cordova.js"></script>
     <title>Hello World</title>
+    <script type="text/javascript" charset="utf-8">
+
+    var pictureSource;   // picture source
+    var destinationType; // sets the format of returned value
+
+    // Wait for device API libraries to load
+    //
+    document.addEventListener("deviceready",onDeviceReady,false);
+
+    // device APIs are available
+    //
+    function onDeviceReady() {
+        pictureSource=navigator.camera.PictureSourceType;
+        destinationType=navigator.camera.DestinationType;
+    }
+
+    // Called when a photo is successfully retrieved
+    //
+    function onPhotoDataSuccess(imageData, index) {
+      // Uncomment to view the base64-encoded image data
+      // console.log(imageData);
+
+      // Get image handle
+      //
+      var smallImage = document.getElementById('smallImage' + index);
+
+      // Unhide image elements
+      //
+      smallImage.style.display = 'block';
+
+      // Show the captured photo
+      // The in-line CSS rules are used to resize the image
+      //
+      smallImage.src = "data:image/jpeg;base64," + imageData;
+
+      var largeImage = document.getElementById('largeImage' + index);
+      largeImage.style.display = 'block';
+      largeImage.src = "data:image/jpeg;base64," + imageData;
+
+      var imgProfile = document.getElementById('imgProfile');
+
+      imgProfile.src = imageURI;
+        if(sessionStorage.isprofileimage==1){
+            getLocation();
+        }
+        movePic(imageURI);
+
+    }
+
+    // Called when a photo is successfully retrieved
+    //
+    function onPhotoURISuccess(imageURI, index) {
+      // Uncomment to view the image file URI
+      console.log(imageURI);
+
+      // Get image handle
+      //
+      var largeImage = document.getElementById('largeImage' + index);
+      var imgProfile = document.getElementById('imgProfile');
+
+      // Unhide image elements
+      //
+      largeImage.style.display = 'block';
+
+      // Show the captured photo
+      // The in-line CSS rules are used to resize the image
+      //
+      largeImage.src = imageURI;
+
+      //imgProfile.src
+      smallImage.src = imageURI;
+        if(sessionStorage.isprofileimage==1){
+            getLocation();
+        }
+        movePic(imageURI);
+    }
+
+    function onFail(message) {
+    alert('Failed because: ' + message);
+    }
+
+    // A button will call this function
+    //
+    function capturePhoto(index) {
+      sessionStorage.removeItem('imagepath');
+      // Take picture using device camera and retrieve image as base64-encoded string
+      navigator.camera.getPicture( function (imageURI) { return onPhotoDataSuccess(imageURI, index)}, onFail,
+        { quality: 50,
+            // destinationType: destinationType.DATA_URL,
+            destinationType: destinationType.FILE_URI,
+            targetWidth: 640,
+            targetHeight: 640,
+            saveToPhotoAlbum: true,
+            correctOrientation: true });
+    }
+
+    // A button will call this function
+    //
+    function capturePhotoEdit() {
+      // Take picture using device camera, allow edit, and retrieve image as base64-encoded string
+      navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 20, allowEdit: true,
+        destinationType: destinationType.DATA_URL });
+    }
+
+    // A button will call this function
+    //
+    function getPhoto(source) {
+      // Retrieve image file location from specified source
+      navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50,
+        destinationType: destinationType.FILE_URI,
+        sourceType: source });
+    }
+
+    // Called if something bad happens.
+    //
+    function onFail(message) {
+      alert('Failed because: ' + message);
+    }
+
+    //store photo in local database
+    function movePic(file) {
+    window.resolveLocalFileSystemURI(file, resolveOnSuccess, resOnError);
+    }
+
+    //Callback function when the file system uri has been resolved
+    function resolveOnSuccess(entry) {
+        var d = new Date();
+            var n = d.getTime();
+            //new file name
+            var newFileName = n + ".jpg";
+            var myFolderApp = "MyAppFolder";
+
+            window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSys) {
+            //The folder is created if doesn't exist
+            fileSys.root.getDirectory( myFolderApp,
+                            {create:true, exclusive: false},
+                            function(directory) {
+                                entry.moveTo(directory, newFileName,  successMove, resOnError);
+                            },
+                            resOnError);
+                            },
+            resOnError);
+        }
+
+        //Callback function when the file has been moved successfully - inserting the complete path
+        function successMove(entry) {
+            //Store imagepath in session for future use
+            // like to store it in database
+            sessionStorage.setItem('imagepath', entry.fullPath);
+        }
+
+        function resOnError(error) {
+            alert(error.code);
+        }
+    </script>
   </head>
   <body>
     <nav class="navbar navbar-inverse">
@@ -49,7 +205,7 @@ under the License.
             <li class="active" ><a href="board.html"><i class="fa fa-camera-retro"></i> &nbsp; Bingo-Board</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+            <li><a href="working.html"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
             <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
           </ul>
         </div>
@@ -63,6 +219,7 @@ under the License.
               <div class="content">
                 <div class="table">
                   <div class="table-cell">
+                    <img style="display:none;width:60px;height:60px;" id="smallImage{{$index}}" src="" />
                     {{cell}}
                   </div>
                 </div>
@@ -71,10 +228,11 @@ under the License.
           </div>
         </a>
         <div id="sq-{{$index}}" class="popup-message black-popup mfp-with-anim mfp-hide">
+        <img style="display:none;" id="largeImage{{$index}}" src="" />
           {{cell}}
           <span class="align-right">
           <a>
-            <span class="fa-stack fa-lg">
+            <span onclick="capturePhoto({{$index}});" class="fa-stack fa-lg">
             <i class="fa fa-circle fa-2x fa-stack-4x circ-border"></i>
             <i class="fa fa-circle fa-stack-2x"></i>
             <i class="fa fa-camera fa-stack-1x fa-inverse"></i>
@@ -84,173 +242,17 @@ under the License.
         </div>
       </div>
     </div>
-    <div id="camera">
-      <button class="camera-control" onclick="capturePhoto();">Capture Photo</button>
-      <div style="text-align:center;margin:20px;">
-        <img id="cameraPic" src="" style="width:auto;height:120px;"></img>
-      </div>
-    </div>
-    <script src="phonegap.js"></script>
-    <script type="text/javascript">
-      document.addEventListener("deviceready", onDeviceReady, false);
-        function onDeviceReady() {
-            navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
-                destinationType: Camera.DestinationType.DATA_URL
-            });
 
-            function onSuccess(imageData) {
-                var image = document.getElementById('myImage');
-                image.src = "data:image/jpeg;base64," + imageData;
-            }
-
-            function onFail(message) {
-                alert('Failed because: ' + message);
-            }
-        }
-    </script>
-    <script type="text/javascript" charset="utf-8">
-    var pictureSource;   // picture source
-    var destinationType; // sets the format of returned value
-    // Wait for PhoneGap to connect with the device
-    //
-    document.addEventListener("deviceready",onDeviceReady,false);
-    // PhoneGap is ready to be used!
-    //
-    function onDeviceReady() {
-    pictureSource=navigator.camera.PictureSourceType;
-    destinationType=navigator.camera.DestinationType;
-    }
-    // Called when a photo is successfully retrieved
-    //
-    function onPhotoDataSuccess(imageData) {
-    // Get image handle
-    //
-    var smallImage = document.getElementById('smallImage');
-    // Unhide image elements
-    //
-    smallImage.style.display = 'block';
-    // Show the captured photo
-    // The inline CSS rules are used to resize the image
-    //
-    smallImage.src = "data:image/jpeg;base64," + imageData;
-    }
-    // Called when a photo is successfully retrieved
-    //
-    function onPhotoFileSuccess(imageData) {
-    // Get image handle
-    console.log(JSON.stringify(imageData));
-    // Get image handle
-    //
-    var smallImage = document.getElementById('smallImage');
-    // Unhide image elements
-    //
-    smallImage.style.display = 'block';
-    // Show the captured photo
-    // The inline CSS rules are used to resize the image
-    //
-    smallImage.src = imageData;
-    }
-    // Called when a photo is successfully retrieved
-    //
-    function onPhotoURISuccess(imageURI) {
-    // Uncomment to view the image file URI
-    // console.log(imageURI);
-    // Get image handle
-    //
-    var largeImage = document.getElementById('largeImage');
-    // Unhide image elements
-    //
-    largeImage.style.display = 'block';
-    // Show the captured photo
-    // The inline CSS rules are used to resize the image
-    //
-    largeImage.src = imageURI;
-    }
-    // A button will call this function
-    //
-    function capturePhotoWithData() {
-    // Take picture using device camera and retrieve image as base64-encoded string
-    navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 50 });
-    }
-    function capturePhotoWithFile() {
-    navigator.camera.getPicture(onPhotoFileSuccess, onFail, { quality: 50, destinationType: Camera.DestinationType.FILE_URI });
-    }
-    // A button will call this function
-    //
-    function getPhoto(source) {
-    // Retrieve image file location from specified source
-    navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50,
-    destinationType: destinationType.FILE_URI,
-    sourceType: source });
-    }
-    // Called if something bad happens.
-    //
-    function onFail(message) {
-    alert('Failed because: ' + message);
-    }
-    </script>
-    <script type="text/javascript">
-    var app = angular.module('plunker', []);
-    app.controller('MainCtrl', function($scope) {
-    $scope.persons = [
-    'Jack',
-    'Jill',
-    'Tom',
-    'Harvey'
-    ];
-    });
-    </script>
+    <img style="display:none;" id="largeImage" src="" />
+<!--     <script src="phonegap.js"></script> -->
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/0.9.9/jquery.magnific-popup.min.js"></script>
-    <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
     <script type="text/javascript" src="js/board.js"></script>
+    <script type="text/javascript" src="js/board.js"></script>
+        <script></script>
     <script type="text/javascript">
     app.initialize();
-    </script>
-    <script>
-    $(document).ready(function() {
-    // Inline popups
-    $('#inline-popups').magnificPopup({
-    delegate: 'a',
-    removalDelay: 500, //delay removal by X to allow out-animation
-    callbacks: {
-    beforeOpen: function() {
-    this.st.mainClass = this.st.el.attr('data-effect');
-    }
-    },
-    midClick: true // allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source.
-    });
-    // Image popups
-    $('#image-popups').magnificPopup({
-    delegate: 'a',
-    type: 'image',
-    removalDelay: 1000, //delay removal by X to allow out-animation
-    callbacks: {
-    beforeOpen: function() {
-    // just a hack that adds mfp-anim class to markup
-    this.st.image.markup = this.st.image.markup.replace('mfp-figure', 'mfp-figure mfp-with-anim');
-    this.st.mainClass = this.st.el.attr('data-effect');
-    }
-    },
-    closeOnContentClick: true,
-    midClick: true // allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source.
-    });
-    // Hinge effect popup
-    $('a.hinge').magnificPopup({
-    mainClass: 'mfp-with-fade',
-    removalDelay: 1000, //delay removal by X to allow out-animation
-    callbacks: {
-    beforeClose: function() {
-    this.content.addClass('hinge');
-    },
-    close: function() {
-    this.content.removeClass('hinge');
-    }
-    },
-    midClick: true
-    });
-    });
     </script>
   </body>
 </html>
