@@ -31,7 +31,7 @@ under the License.
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script data-require="angular.js@1.1.x" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.js" data-semver="1.1.5"></script>
     <script type="text/javascript" src="cordova.js"></script>
-    <title>Hello World</title>
+    <title>Selfie Bingo</title>
     <script type="text/javascript" charset="utf-8">
 
     var pictureSource;   // picture source
@@ -70,57 +70,35 @@ under the License.
       var largeImage = document.getElementById('largeImage' + index);
       largeImage.style.display = 'block';
       largeImage.src = "data:image/jpeg;base64," + imageData;
-
-      var imgProfile = document.getElementById('imgProfile');
-
-      imgProfile.src = imageURI;
-        if(sessionStorage.isprofileimage==1){
-            getLocation();
-        }
-        movePic(imageURI);
-
     }
 
     // Called when a photo is successfully retrieved
     //
     function onPhotoURISuccess(imageURI, index) {
       // Uncomment to view the image file URI
-      console.log(imageURI);
+      // console.log(imageURI);
 
       // Get image handle
       //
       var largeImage = document.getElementById('largeImage' + index);
-      var imgProfile = document.getElementById('imgProfile');
-
+      var smallImage = document.getElementById('smallImage' + index);
       // Unhide image elements
       //
       largeImage.style.display = 'block';
-
+      smallImage.style.display = 'block';
       // Show the captured photo
       // The in-line CSS rules are used to resize the image
       //
       largeImage.src = imageURI;
-
-      //imgProfile.src
       smallImage.src = imageURI;
-        if(sessionStorage.isprofileimage==1){
-            getLocation();
-        }
-        movePic(imageURI);
-    }
-
-    function onFail(message) {
-    alert('Failed because: ' + message);
     }
 
     // A button will call this function
     //
     function capturePhoto(index) {
-      sessionStorage.removeItem('imagepath');
       // Take picture using device camera and retrieve image as base64-encoded string
-      navigator.camera.getPicture( function (imageURI) { return onPhotoDataSuccess(imageURI, index)}, onFail,
+      navigator.camera.getPicture( function (imageURI) { return onPhotoURISuccess(imageURI, index)}, onFail,
         { quality: 50,
-            // destinationType: destinationType.DATA_URL,
             destinationType: destinationType.FILE_URI,
             targetWidth: 640,
             targetHeight: 640,
@@ -151,41 +129,6 @@ under the License.
       alert('Failed because: ' + message);
     }
 
-    //store photo in local database
-    function movePic(file) {
-    window.resolveLocalFileSystemURI(file, resolveOnSuccess, resOnError);
-    }
-
-    //Callback function when the file system uri has been resolved
-    function resolveOnSuccess(entry) {
-        var d = new Date();
-            var n = d.getTime();
-            //new file name
-            var newFileName = n + ".jpg";
-            var myFolderApp = "MyAppFolder";
-
-            window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSys) {
-            //The folder is created if doesn't exist
-            fileSys.root.getDirectory( myFolderApp,
-                            {create:true, exclusive: false},
-                            function(directory) {
-                                entry.moveTo(directory, newFileName,  successMove, resOnError);
-                            },
-                            resOnError);
-                            },
-            resOnError);
-        }
-
-        //Callback function when the file has been moved successfully - inserting the complete path
-        function successMove(entry) {
-            //Store imagepath in session for future use
-            // like to store it in database
-            sessionStorage.setItem('imagepath', entry.fullPath);
-        }
-
-        function resOnError(error) {
-            alert(error.code);
-        }
     </script>
   </head>
   <body>

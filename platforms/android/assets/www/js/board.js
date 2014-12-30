@@ -7,60 +7,55 @@
  * # AboutCtrl
  * Controller of the myappApp
  */
-var app = angular.module('myApp', []);
-app.controller('TableController', function($scope) {
-    $scope.cells = contents();
-    // $scope.$watchCollection ('cells', function(newArray, oldArray){
-    //    localStorage.clear();
-    //    localStorage["board"] = JSON.stringify(newArray);
-    //    return JSON.parse(localStorage["board"]);
-    // });
+var app = angular.module('myApp',[]);
+app.controller( 'TableController', function ( $scope ) {
+ $scope.cells = contents();
+ // $scope.$watchCollection ('cells', function(newArray, oldArray){
+ //    localStorage.clear();
+ //    localStorage["board"] = JSON.stringify(newArray);
+ //    return JSON.parse(localStorage["board"]);
+ // });
 
-    function contents() {
-        if (localStorage.length === 0) {
-            var text = ['Take a picture with a bus host',
-                2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 'Free Square', 14, 15,
-                16, 17, 18, 19, 20, 21, 22, 23, 24, 25
-            ];
+  function contents(){
+    if(localStorage.length === 0){
+        var text = ['Take a picture with a bus host',
+        2,3,4,5,6,7,8,9,10,11,12,'Free Square',14,15,
+        16,17,18,19,20,21,22,23,24,25];
 
-            var images = Array.apply(0, Array(26)).map(function(){return '';});
+        text = shuffle(text);
 
-            text = shuffle(text);
-
-            localStorage["board"] = JSON.stringify(text);
-            localStorage["photos"] = JSON.stringify(images);
-            return text;
-        } else {
-            var temp = JSON.parse(localStorage["board"]);
-            return JSON.parse(localStorage["board"]);
-        }
+        localStorage["board"] = JSON.stringify(text);
+       return text;
+      }else{
+        var temp = JSON.parse(localStorage["board"]);
+        return JSON.parse(localStorage["board"]);
+      }
     }
 
 
-    function shuffle(array) {
-        var currentIndex = array.length,
-            temporaryValue, randomIndex;
+  function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex ;
 
-        // While there remain elements to shuffle...
-        while (0 !== currentIndex) {
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
 
-            // Pick a remaining element...
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex -= 1;
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
 
-            // And swap it with the current element.
-            temporaryValue = array[currentIndex];
-            array[currentIndex] = array[randomIndex];
-            array[randomIndex] = temporaryValue;
-        }
-        var searchIndex, toswap, temp = array[12];
-        searchIndex = array.indexOf("Free Square");
-        toswap = 12;
-        array[12] = array[searchIndex];
-        array[searchIndex] = temp;
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+    var searchIndex, toswap, temp = array[12];
+    searchIndex = array.indexOf("Free Square");
+    toswap = 12;
+    array[12] = array[searchIndex];
+    array[searchIndex] = temp;
 
-        return array;
-    }
+  return array;
+}
 });
 
 
@@ -84,8 +79,7 @@ $(document).ready(function() {
         callbacks: {
             beforeOpen: function() {
                 // just a hack that adds mfp-anim class to markup
-                this.st.image.markup = this.st.image.markup.replace('mfp-figure',
-                    'mfp-figure mfp-with-anim');
+                this.st.image.markup = this.st.image.markup.replace('mfp-figure', 'mfp-figure mfp-with-anim');
                 this.st.mainClass = this.st.el.attr('data-effect');
             }
         },

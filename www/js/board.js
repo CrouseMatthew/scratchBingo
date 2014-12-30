@@ -33,7 +33,7 @@ app.controller( 'TableController', function ( $scope ) {
     }
 
 
-    function shuffle(array) {
+  function shuffle(array) {
   var currentIndex = array.length, temporaryValue, randomIndex ;
 
   // While there remain elements to shuffle...
