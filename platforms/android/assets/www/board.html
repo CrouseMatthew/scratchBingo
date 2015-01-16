@@ -1,201 +1,184 @@
 <!DOCTYPE html>
-<!--
-Copyright (c) 2012-2014 Adobe Systems Incorporated. All rights reserved.
-Licensed to the Apache Software Foundation (ASF) under one
-or more contributor license agreements.  See the NOTICE file
-distributed with this work for additional information
-regarding copyright ownership.  The ASF licenses this file
-to you under the Apache License, Version 2.0 (the
-"License"); you may not use this file except in compliance
-with the License.  You may obtain a copy of the License at
-http://www.apache.org/licenses/LICENSE-2.0
-Unless required by applicable law or agreed to in writing,
-software distributed under the License is distributed on an
-"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-KIND, either express or implied.  See the License for the
-specific language governing permissions and limitations
-under the License.
--->
 <html ng-app="myApp">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="format-detection" content="telephone=no" />
-    <meta name="msapplication-tap-highlight" content="no" />
-    <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
-    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-    <link rel="stylesheet" type="text/css" href="css/index.css" />
-    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/0.9.9/magnific-popup.css">
-    <link rel="stylesheet" type="text/css" href="css/index.css" />
-    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script data-require="angular.js@1.1.x" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.js" data-semver="1.1.5"></script>
-    <script type="text/javascript" src="cordova.js"></script>
-    <title>Selfie Bingo</title>
-    <script type="text/javascript" charset="utf-8">
-
-    var pictureSource;   // picture source
-    var destinationType; // sets the format of returned value
-
-    // Wait for device API libraries to load
-    //
-    document.addEventListener("deviceready",onDeviceReady,false);
-
-    // device APIs are available
-    //
-    function onDeviceReady() {
-        pictureSource=navigator.camera.PictureSourceType;
-        destinationType=navigator.camera.DestinationType;
-    }
-
-    // Called when a photo is successfully retrieved
-    //
-    function onPhotoDataSuccess(imageData, index) {
-      // Uncomment to view the base64-encoded image data
-      // console.log(imageData);
-
-      // Get image handle
-      //
-      var smallImage = document.getElementById('smallImage' + index);
-
-      // Unhide image elements
-      //
-      smallImage.style.display = 'block';
-
-      // Show the captured photo
-      // The in-line CSS rules are used to resize the image
-      //
-      smallImage.src = "data:image/jpeg;base64," + imageData;
-
-      var largeImage = document.getElementById('largeImage' + index);
-      largeImage.style.display = 'block';
-      largeImage.src = "data:image/jpeg;base64," + imageData;
-    }
-
-    // Called when a photo is successfully retrieved
-    //
-    function onPhotoURISuccess(imageURI, index) {
-      // Uncomment to view the image file URI
-      // console.log(imageURI);
-
-      // Get image handle
-      //
-      var largeImage = document.getElementById('largeImage' + index);
-      var smallImage = document.getElementById('smallImage' + index);
-      // Unhide image elements
-      //
-      largeImage.style.display = 'block';
-      smallImage.style.display = 'block';
-      // Show the captured photo
-      // The in-line CSS rules are used to resize the image
-      //
-      largeImage.src = imageURI;
-      smallImage.src = imageURI;
-    }
-
-    // A button will call this function
-    //
-    function capturePhoto(index) {
-      // Take picture using device camera and retrieve image as base64-encoded string
-      navigator.camera.getPicture( function (imageURI) { return onPhotoURISuccess(imageURI, index)}, onFail,
-        { quality: 50,
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, target-densitydpi=medium-dpi, user-scalable=0" />
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/0.9.9/magnific-popup.css">
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script data-require="angular.js@1.1.x" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.js" data-semver="1.1.5"></script>
+        <script type="text/javascript" src="cordova.js"></script>
+        <title>Selfie Bingo</title>
+        <script type="text/javascript" charset="utf-8">
+        var pictureSource;   // picture source
+        var destinationType; // sets the format of returned value
+        // Wait for device API libraries to load
+        //
+        document.addEventListener("deviceready",onDeviceReady,false);
+        // device APIs are available
+        //
+        function onDeviceReady() {
+            pictureSource=navigator.camera.PictureSourceType;
+            destinationType=navigator.camera.DestinationType;
+        }
+        // Called when a photo is successfully retrieved
+        //
+        function onPhotoDataSuccess(imageData, index) {
+            // Get image handle
+            //
+            var smallImage = document.getElementById('smallImage' + index);
+            // Unhide image elements
+            //
+            smallImage.style.display = 'block';
+            // Show the captured photo
+            // The in-line CSS rules are used to resize the image
+            //
+            smallImage.src = "data:image/jpeg;base64," + imageData;
+            var largeImage = document.getElementById('largeImage' + index);
+            largeImage.style.display = 'block';
+            largeImage.src = "data:image/jpeg;base64," + imageData;
+        }
+        // Called when a photo is successfully retrieved
+        //
+        function onPhotoURISuccess(imageURI, index) {
+            // Uncomment to view the image file URI
+            // console.log(imageURI);
+            //
+            // Get image handle
+            //
+            var largeImage = document.getElementById('largeImage' + index);
+            var smallImage = document.getElementById('smallImage' + index);
+            // Unhide image elements
+            //
+            largeImage.style.display = 'block';
+            smallImage.style.display = 'block';
+            // Show the captured photo
+            // The in-line CSS rules are used to resize the image
+            //
+            largeImage.src = imageURI;
+            smallImage.src = imageURI;
+            var srcList = JSON.parse(localStorage.srcList);
+            srcList[index] = imageURI;
+            localStorage.srcList = JSON.stringify(srcList);
+            console.log(localStorage, "controller");
+        }
+        // A button will call this function
+        //
+        function capturePhoto(index) {
+        // Take picture using device camera and retrieve image as base64-encoded string
+        navigator.camera.getPicture( function (imageURI) { return onPhotoURISuccess(imageURI, index)}, onFail,
+            { quality: 50,
             destinationType: destinationType.FILE_URI,
             targetWidth: 640,
             targetHeight: 640,
             saveToPhotoAlbum: true,
             correctOrientation: true });
-    }
-
-    // A button will call this function
-    //
-    function capturePhotoEdit() {
-      // Take picture using device camera, allow edit, and retrieve image as base64-encoded string
-      navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 20, allowEdit: true,
+        }
+        // A button will call this function
+        //
+        function capturePhotoEdit() {
+        // Take picture using device camera, allow edit, and retrieve image as base64-encoded string
+        navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 20, allowEdit: true,
         destinationType: destinationType.DATA_URL });
-    }
-
-    // A button will call this function
-    //
-    function getPhoto(source) {
-      // Retrieve image file location from specified source
-      navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50,
-        destinationType: destinationType.FILE_URI,
-        sourceType: source });
-    }
-
-    // Called if something bad happens.
-    //
-    function onFail(message) {
-      alert('Failed because: ' + message);
-    }
-
-    </script>
-  </head>
-  <body>
-    <nav class="navbar navbar-inverse">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#/">SelfieBingo <small>v2014</small></a>
-        </div>
-        <div class="collapse navbar-collapse" id="myNavbar">
-          <ul class="nav navbar-nav">
-            <li><a href="index.html"><i class="fa fa-bus"></i> &nbsp; Home</a></li>
-            <li class="active" ><a href="board.html"><i class="fa fa-camera-retro"></i> &nbsp; Bingo-Board</a></li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="working.html"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-    <div id="inline-popups" ng-controller="TableController">
-      <div  ng-repeat="cell in cells">
-        <a a href="#sq-{{$index}}" data-effect="mfp-zoom-out">
-          <div class="parent-container">
-            <div class="square">
-              <div class="content">
-                <div class="table">
-                  <div class="table-cell">
-                    <img style="display:none;width:60px;height:60px;" id="smallImage{{$index}}" src="" />
-                    {{cell}}
-                  </div>
+        }
+        // A button will call this function
+        //
+        function getPhoto(source) {
+            // Retrieve image file location from specified source
+            navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50,
+            destinationType: destinationType.FILE_URI,
+            sourceType: source });
+        }
+        // Called if something bad happens.
+        //
+        function onFail(message) {
+        alert('Failed because: ' + message);
+        }
+        </script>
+    </head>
+    <body>
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#/">SelfieBingo <small>v2014</small></a>
                 </div>
-              </div>
+                <div class="collapse navbar-collapse" id="myNavbar">
+                    <ul class="nav navbar-nav">
+                        <li><a href="index.html"><i class="fa fa-bus"></i> &nbsp; Home</a></li>
+                        <li class="active" ><a href="board.html"><i class="fa fa-camera-retro"></i> &nbsp; Bingo-Board</a></li>
+                    </ul>
+                </div>
             </div>
-          </div>
-        </a>
-        <div id="sq-{{$index}}" class="popup-message black-popup mfp-with-anim mfp-hide">
-        <img style="display:none;" id="largeImage{{$index}}" src="" />
-          {{cell}}
-          <span class="align-right">
-          <a>
-            <span onclick="capturePhoto({{$index}});" class="fa-stack fa-lg">
-            <i class="fa fa-circle fa-2x fa-stack-4x circ-border"></i>
-            <i class="fa fa-circle fa-stack-2x"></i>
-            <i class="fa fa-camera fa-stack-1x fa-inverse"></i>
-            </span>
-          </a>
-          </span>
+        </nav>
+        <div id="inline-popups" ng-controller="TableController">
+            <h1 class="text-center">B &nbsp;&nbsp;&nbsp;I &nbsp;&nbsp;&nbsp; N &nbsp;&nbsp; G &nbsp;&nbsp; O</h1>
+            <div  ng-repeat="cell in cells">
+                <a a href="#sq-{{$index}}" data-effect="mfp-zoom-out">
+                    <div class="parent-container">
+                        <div class="square">
+                            <div class="content">
+                                <div class="table">
+                                    <div class="table-cell">
+                                        <img style="display:none;width:60px;height:60px;" id="smallImage{{$index}}" src="" />
+                                        {{cell}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <div id="sq-{{$index}}" class="popup-message black-popup mfp-with-anim mfp-hide">
+                    <img style="display:none;" id="largeImage{{$index}}" src="" />
+                    {{cell}}
+                    <span class="align-right">
+                    <a>
+                        <span onclick="capturePhoto({{$index}});" class="fa-stack fa-lg">
+                        <i class="fa fa-circle fa-2x fa-stack-4x circ-border"></i>
+                        <i class="fa fa-circle fa-stack-2x"></i>
+                        <i class="fa fa-camera fa-stack-1x fa-inverse"></i>
+                        </span>
+                    </a>
+                    </span>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-
-    <img style="display:none;" id="largeImage" src="" />
-<!--     <script src="phonegap.js"></script> -->
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/0.9.9/jquery.magnific-popup.min.js"></script>
-    <script type="text/javascript" src="js/index.js"></script>
-    <script type="text/javascript" src="js/board.js"></script>
-    <script type="text/javascript" src="js/board.js"></script>
+        <img style="display:none;" id="largeImage" src="" />
+        <!--     <script src="phonegap.js"></script> -->
+        <script>
+        $( document ).ready(function() {
+            var srcList = JSON.parse(localStorage.srcList);
+                for(var i=0; i < srcList.length; ++i){
+                    var srcList =JSON.parse(localStorage.srcList);
+                    var fileSrc = srcList[i];
+                    $('#largeImage' + i).attr('src', fileSrc);
+                    $('#smallImage' + i).attr('src', fileSrc);
+                    var temp =  $('#largeImage' + i).attr('src');
+                    if( temp != ""){
+                        $('#largeImage' + i).attr('style', "");
+                        $('#smallImage' + i).attr('style', "width:60px;height:60px;");
+                    }
+                }
+        });
+        </script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/0.9.9/jquery.magnific-popup.min.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="js/board.js"></script>
+        <script type="text/javascript" src="js/board.js"></script>
         <script></script>
-    <script type="text/javascript">
-    app.initialize();
-    </script>
-  </body>
+        <script type="text/javascript">
+        app.initialize();
+        </script>
+    </body>
 </html>

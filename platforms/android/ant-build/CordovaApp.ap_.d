@@ -1,5 +1,6 @@
 C:\Users\Matt\Desktop\Bingo From Scratch\android\platforms\android\ant-build\CordovaApp.ap_ \
  : C:\Users\Matt\Desktop\Bingo From Scratch\android\platforms\android\res\drawable\icon.png \
+C:\Users\Matt\Desktop\Bingo From Scratch\android\platforms\android\res\drawable-hdpi\icon.png \
 C:\Users\Matt\Desktop\Bingo From Scratch\android\platforms\android\res\drawable-land-hdpi\screen.png \
 C:\Users\Matt\Desktop\Bingo From Scratch\android\platforms\android\res\drawable-land-ldpi\screen.png \
 C:\Users\Matt\Desktop\Bingo From Scratch\android\platforms\android\res\drawable-land-mdpi\screen.png \
@@ -8,9 +9,11 @@ C:\Users\Matt\Desktop\Bingo From Scratch\android\platforms\android\res\drawable-
 C:\Users\Matt\Desktop\Bingo From Scratch\android\platforms\android\res\drawable-port-ldpi\screen.png \
 C:\Users\Matt\Desktop\Bingo From Scratch\android\platforms\android\res\drawable-port-mdpi\screen.png \
 C:\Users\Matt\Desktop\Bingo From Scratch\android\platforms\android\res\drawable-port-xhdpi\screen.png \
+C:\Users\Matt\Desktop\Bingo From Scratch\android\platforms\android\res\drawable-xxhdpi\icon.png \
 C:\Users\Matt\Desktop\Bingo From Scratch\android\platforms\android\res\values\strings.xml \
 C:\Users\Matt\Desktop\Bingo From Scratch\android\platforms\android\res\xml\config.xml \
 C:\Users\Matt\Desktop\Bingo From Scratch\android\platforms\android\ant-build\res\drawable\icon.png \
+C:\Users\Matt\Desktop\Bingo From Scratch\android\platforms\android\ant-build\res\drawable-hdpi\icon.png \
 C:\Users\Matt\Desktop\Bingo From Scratch\android\platforms\android\ant-build\res\drawable-land-hdpi\screen.png \
 C:\Users\Matt\Desktop\Bingo From Scratch\android\platforms\android\ant-build\res\drawable-land-ldpi\screen.png \
 C:\Users\Matt\Desktop\Bingo From Scratch\android\platforms\android\ant-build\res\drawable-land-mdpi\screen.png \
@@ -19,9 +22,11 @@ C:\Users\Matt\Desktop\Bingo From Scratch\android\platforms\android\ant-build\res
 C:\Users\Matt\Desktop\Bingo From Scratch\android\platforms\android\ant-build\res\drawable-port-ldpi\screen.png \
 C:\Users\Matt\Desktop\Bingo From Scratch\android\platforms\android\ant-build\res\drawable-port-mdpi\screen.png \
 C:\Users\Matt\Desktop\Bingo From Scratch\android\platforms\android\ant-build\res\drawable-port-xhdpi\screen.png \
+C:\Users\Matt\Desktop\Bingo From Scratch\android\platforms\android\ant-build\res\drawable-xxhdpi\icon.png \
 C:\Users\Matt\Desktop\Bingo From Scratch\android\platforms\android\assets\www \
 C:\Users\Matt\Desktop\Bingo From Scratch\android\platforms\android\assets\_where-is-www.txt \
 C:\Users\Matt\Desktop\Bingo From Scratch\android\platforms\android\assets\www\board.html \
+C:\Users\Matt\Desktop\Bingo From Scratch\android\platforms\android\assets\www\config.xml \
 C:\Users\Matt\Desktop\Bingo From Scratch\android\platforms\android\assets\www\cordova.js \
 C:\Users\Matt\Desktop\Bingo From Scratch\android\platforms\android\assets\www\cordova_plugins.js \
 C:\Users\Matt\Desktop\Bingo From Scratch\android\platforms\android\assets\www\css \

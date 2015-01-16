@@ -8,26 +8,33 @@
  * Controller of the myappApp
  */
 var app = angular.module('myApp',[]);
-app.controller( 'TableController', function ( $scope ) {
+app.controller( 'TableController', function ( $scope, $timeout ) {
  $scope.cells = contents();
- // $scope.$watchCollection ('cells', function(newArray, oldArray){
- //    localStorage.clear();
- //    localStorage["board"] = JSON.stringify(newArray);
- //    return JSON.parse(localStorage["board"]);
- // });
 
+ if(localStorage.length === 1){
+    var srcList = ["","","","","","","","","","","","","","","","","","","","","","","","",""];
+    localStorage.srcList = JSON.stringify(srcList);
+ }else{
+    srcList = JSON.parse(localStorage.srcList);
+ }
   function contents(){
     if(localStorage.length === 0){
         var text = ['Take a picture with a bus host',
-        2,3,4,5,6,7,8,9,10,11,12,'Free Square',14,15,
-        16,17,18,19,20,21,22,23,24,25];
+        "With a Fox","With a Panda","With something you can't unsee",
+        "With the most people you can fit","With a Christmas tree",
+        "Planking (it's coming back!)","With the drunkest person you can find",
+        "Doing a yoga pose","Crazy hat party!","With the number 8",
+        "Dancing...HARD",'Free Square',"With Fruit","With Something Yellow....",
+        "With a Pirate (or close enough)","In the cold (You gotta show it)",
+        "Holding FIRE!","With Something you'd expect from Portlandia",
+        "With 4 drinks","With someone else taking a selfie","Doing shots",
+        "With a mustache","Get Creative!","Being Green"];
 
         text = shuffle(text);
 
-        localStorage["board"] = JSON.stringify(text);
-       return text;
+        localStorage.board = JSON.stringify(text);
+        return text;
       }else{
-        var temp = JSON.parse(localStorage["board"]);
         return JSON.parse(localStorage["board"]);
       }
     }
